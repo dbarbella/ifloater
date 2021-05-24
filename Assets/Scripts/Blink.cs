@@ -27,7 +27,7 @@ public class Blink : MonoBehaviour
     private float currentSpeed;
 
     // Keep track of the game controller
-    public GameObject gameController;
+    public GameController gameController;
 
     // If this is true, print debug statements about blinking.
     public bool debugBlink = false;
@@ -46,6 +46,18 @@ public class Blink : MonoBehaviour
 
         currentDirection = Vector3.down;
         currentSpeed = 0.0f;
+
+        //gameController = GameObject.FindWithTag("GameController");
+
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        if (gameControllerObject != null)
+        {
+            gameController = gameControllerObject.GetComponent<GameController>();
+        }
+        if (gameController == null)
+        {
+            Debug.Log("Cannot find 'GameController' script.");
+        }
     }
 
     // Update is called once per frame
@@ -64,6 +76,7 @@ public class Blink : MonoBehaviour
         {
             // This should probably make a sound of some kind.
             CloseEye();
+            gameController.receiveBlinkNotice();
         }
 
         // If we've reached the bottom of the blink, go back up again.

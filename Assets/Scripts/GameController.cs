@@ -22,6 +22,10 @@ public class GameController : MonoBehaviour
     public bool restart;
 
     public bool debugFloaterSpawn;
+    public bool debugBlinkMessaging;
+
+    private GameObject newFloater;
+    private List<GameObject> livingFloaters = new List<GameObject>();
 
     IEnumerator SpawnFloaters()
     {
@@ -33,11 +37,17 @@ public class GameController : MonoBehaviour
         {
             for (int i = 0; i < hazardCount; i++)
             {
-                Vector3 spawnPosition = new Vector3(Random.Range(minFloaterSpawnX, maxFloaterSpawnX), floaterSpawnY, floaterSpawnZ);
-                Instantiate(floater, spawnPosition, Quaternion.identity);
                 if (debugFloaterSpawn)
                 { print("Making a floater."); }
-            
+
+                // Choose spawn position randomly
+                // The size and rotation are chosen randomly by the floater itself, not here.
+                Vector3 spawnPosition = new Vector3(Random.Range(minFloaterSpawnX, maxFloaterSpawnX), floaterSpawnY, floaterSpawnZ);
+                // Create the floater
+                newFloater = Instantiate(floater, spawnPosition, Quaternion.identity);
+                // Add the floater to livingFloaters
+                livingFloaters.Add(newFloater);
+                // Wait to spawn the next one
                 yield return new WaitForSeconds(spawnWait);
             }
             yield return new WaitForSeconds(waveWait);
@@ -63,5 +73,12 @@ public class GameController : MonoBehaviour
         // This needs to periodically spawn floaters
         // Check how we spawn asteroids
         // This maybe needs to be a separate spawner script?
+    }
+
+    public void receiveBlinkNotice()
+    {
+        if (debugBlinkMessaging)
+        { print("Game controller received a blink message."); }
+        // Notify each floater of the blink.
     }
 }
