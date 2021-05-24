@@ -422,8 +422,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5e82c1d73045144b71e7153e2eec84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blinkDownSpeed: 35
-  blinkUpSpeed: 35
+  blinkDownSpeed: 60
+  blinkUpSpeed: 60
   closedPeriod: 1
   blinkDelay: 0.5
   lidTransform: {fileID: 0}
@@ -1037,7 +1037,7 @@ MonoBehaviour:
   floater: {fileID: 5740229961228567545, guid: eb73407acdb1d2741b3d091e418c668c, type: 3}
   minFloaterSpawnX: -8
   maxFloaterSpawnX: 8
-  floaterSpawnY: 10
+  floaterSpawnY: 8
   floaterSpawnZ: -0.43
   hazardCount: 5
   spawnWait: 1
@@ -1045,7 +1045,8 @@ MonoBehaviour:
   waveWait: 0
   gameOver: 0
   restart: 0
-  debugFloaterSpawn: 1
+  debugFloaterSpawn: 0
+  debugBlinkMessaging: 1
 --- !u!4 &1653571016
 Transform:
   m_ObjectHideFlags: 0

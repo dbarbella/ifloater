@@ -78,7 +78,18 @@ public class GameController : MonoBehaviour
     public void receiveBlinkNotice()
     {
         if (debugBlinkMessaging)
-        { print("Game controller received a blink message."); }
+        {
+            print("Game controller received a blink message.");
+        }
         // Notify each floater of the blink.
+        for (int i = 0; i < livingFloaters.Count; i++)
+        {
+            //gameController = gameControllerObject.GetComponent<GameController>();
+            if (debugBlinkMessaging)
+            {
+                print("Notifying a floater of the blink.");
+            }
+            livingFloaters[i].GetComponent<Floater>().reactToBlink();
+        }
     }
 }

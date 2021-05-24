@@ -12,7 +12,16 @@ public class Floater : MonoBehaviour
     // Print debug information about floater if true
     public bool debugFloater;
 
-    public float blinkThrust = 20f;
+    // Amount to bump up on a blink;
+    public float blinkThrust = 750f;
+
+    // variation factor in how big the bump is.
+    // Randomly increase or decrease by up to this percent.
+    public float blinkThrustChaos = 0.5f;
+
+    // We may eventually want this to depend on the floater's y value,
+    // but a constant is fine for now.
+    public float blinkReactionDelay = 0.1f;
 
 
     // Start is called before the first frame update
@@ -34,6 +43,15 @@ public class Floater : MonoBehaviour
         // If we collide with bottom of top lid, and it's going up, we want to go up.
     }
 
+    public void reactToBlink()
+    {
+        if (debugFloater)
+        {
+            print("Floater reacting to blink...");
+        }
+        Invoke("addUpBlinkForce", blinkReactionDelay);
+    }
+    
     // We need to be able to apply a force to all of the floaters. Let's start by seeing if we can "bump" the floater
     // We do want this to use real physics.
     void addUpBlinkForce()
@@ -43,7 +61,11 @@ public class Floater : MonoBehaviour
         // This is what we want to do, but we want it to happen kind of
         // along with the blink up.
         // Give this a smidge of randomness, maybe.
-        rb.AddForce(Vector3.up * blinkThrust);
+        if (debugFloater)
+        {
+            print("Adding up blink force...");
+        }
+        rb.AddForce(Vector3.up * blinkThrust * (1+(Random.Range(-blinkThrustChaos, blinkThrustChaos))));
     }
 
     // We need to destroy it when it goes out of bounds, or respawn it or something
