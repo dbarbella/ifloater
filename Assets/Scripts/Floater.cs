@@ -68,6 +68,18 @@ public class Floater : MonoBehaviour
         rb.AddForce(Vector3.up * blinkThrust * (1+(Random.Range(-blinkThrustChaos, blinkThrustChaos))));
     }
 
+    // Don't like that this is public and the other add i
+    public void reactToIrisMovement(float xForce, float yForce)
+    {
+        if (debugFloater)
+        {
+            print("Applying iris movement force to floater...");
+        }
+        // It's possible that this Vector3 should be built in
+        // GameController.
+        rb.AddForce(new Vector3(xForce, yForce, 0.0f));
+    }
+
     // We need to destroy it when it goes out of bounds, or respawn it or something
 
     // We need to destroy it when it goes in the crosshair and award points.

@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minFloaterLen: 0.5
   maxFloaterLen: 1.5
-  debugFloater: 1
+  debugFloater: 0
   blinkThrust: 750
   blinkThrustChaos: 0.5
   blinkReactionDelay: 0.1

@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
 
     public bool debugFloaterSpawn;
     public bool debugBlinkMessaging;
+    public bool debugIrisMessaging;
 
     private GameObject newFloater;
     private List<GameObject> livingFloaters = new List<GameObject>();
@@ -79,7 +80,7 @@ public class GameController : MonoBehaviour
     {
         if (debugBlinkMessaging)
         {
-            print("Game controller received a blink message.");
+            Debug.Log("Game controller received a blink message.");
         }
         // Notify each floater of the blink.
         for (int i = 0; i < livingFloaters.Count; i++)
@@ -87,9 +88,53 @@ public class GameController : MonoBehaviour
             //gameController = gameControllerObject.GetComponent<GameController>();
             if (debugBlinkMessaging)
             {
-                print("Notifying a floater of the blink.");
+                Debug.Log("Notifying a floater of the blink.");
             }
             livingFloaters[i].GetComponent<Floater>().reactToBlink();
         }
+    }
+
+    public void receiveIrisMovement(float xMovement, float yMovement)
+    {
+        if (debugIrisMessaging)
+        {
+            Debug.Log("Received message from MoveIris: " + xMovement + ", " + yMovement);
+        }
+
+        // The values that are sent to each floater to have them adjust their movement.
+        float xForce;
+        float yForce;
+
+        // This is clearly not the formula we want; this is just to see if the communication
+        // chain is working.
+        xForce = convertIrisMovementForce(xMovement);
+        yForce = convertIrisMovementForce(yMovement);
+
+        // If we want this to affect all floaters the same way, which I think we do,
+        // we should do any calculations here, and then tell them what to do,
+        // rather than having each floater do the calculations.
+        for (int i = 0; i < livingFloaters.Count; i++)
+        {
+            livingFloaters[i].GetComponent<Floater>().reactToIrisMovement(xForce, yForce);
+        }
+    }
+
+    // Convert a force
+    float convertIrisMovementForce(float inputForce)
+    {
+        // These values determine how the floaters react to iris movement.
+        float irisJerkMultiplier = 13.0f;
+        float irisJerkExponent = 2.0f;
+        
+        float returnForce;
+        int negativeForceValue = 1;
+
+        if (inputForce < 0)
+        {
+            negativeForceValue = -1;
+        }
+        returnForce = Mathf.Pow((Mathf.Abs(inputForce) * irisJerkMultiplier), irisJerkExponent) * negativeForceValue;
+        print(inputForce + " " + returnForce);
+        return returnForce;
     }
 }
