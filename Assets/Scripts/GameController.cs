@@ -76,7 +76,7 @@ public class GameController : MonoBehaviour
         // This maybe needs to be a separate spawner script?
     }
 
-    public void receiveBlinkNotice()
+    public void ReceiveBlinkNotice()
     {
         if (debugBlinkMessaging)
         {
@@ -94,7 +94,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void receiveIrisMovement(float xMovement, float yMovement)
+    public void ReceiveIrisMovement(float xMovement, float yMovement)
     {
         if (debugIrisMessaging)
         {
@@ -107,8 +107,8 @@ public class GameController : MonoBehaviour
 
         // This is clearly not the formula we want; this is just to see if the communication
         // chain is working.
-        xForce = convertIrisMovementForce(xMovement);
-        yForce = convertIrisMovementForce(yMovement);
+        xForce = ConvertIrisMovementForce(xMovement);
+        yForce = ConvertIrisMovementForce(yMovement);
 
         // If we want this to affect all floaters the same way, which I think we do,
         // we should do any calculations here, and then tell them what to do,
@@ -120,7 +120,7 @@ public class GameController : MonoBehaviour
     }
 
     // Convert a force
-    float convertIrisMovementForce(float inputForce)
+    float ConvertIrisMovementForce(float inputForce)
     {
         // These values determine how the floaters react to iris movement.
         float irisJerkMultiplier = 13.0f;
@@ -136,5 +136,13 @@ public class GameController : MonoBehaviour
         returnForce = Mathf.Pow((Mathf.Abs(inputForce) * irisJerkMultiplier), irisJerkExponent) * negativeForceValue;
         print(inputForce + " " + returnForce);
         return returnForce;
+    }
+
+    public void DestroyFloater(GameObject floaterObject, string causeOfDeath)
+    {
+        // Remove it from our list.
+        livingFloaters.Remove(floaterObject);
+        // Destroy it.
+        Destroy(floaterObject);
     }
 }

@@ -63,12 +63,12 @@ public class Blink : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lidUpdate();
+        LidUpdate();
     }
 
     // This is responsible for updating the direction of the lid, and then
     // updating its position.
-    void lidUpdate()
+    void LidUpdate()
     {
         // Check to see if the blink button was pressed and it's been long
         // enough since the last blink.
@@ -76,7 +76,7 @@ public class Blink : MonoBehaviour
         {
             // This should probably make a sound of some kind.
             CloseEye();
-            gameController.receiveBlinkNotice();
+            gameController.ReceiveBlinkNotice();
         }
 
         // If we've reached the bottom of the blink, go back up again.

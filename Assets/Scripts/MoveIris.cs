@@ -63,7 +63,7 @@ public class MoveIris : MonoBehaviour
     void lookUpdate()
     {
         rawMousePos = Input.mousePosition;
-        scaledMousePos = scaleMousePos(rawMousePos);
+        scaledMousePos = ScaleMousePos(rawMousePos);
 
         oldIrisX = transform.position.x;
         oldIrisY = transform.position.y;
@@ -79,12 +79,12 @@ public class MoveIris : MonoBehaviour
             Debug.Log(scaledMousePos);
         }
 
-        gameController.receiveIrisMovement(newIrisX - oldIrisX, newIrisY - oldIrisY);
+        gameController.ReceiveIrisMovement(newIrisX - oldIrisX, newIrisY - oldIrisY);
     }
 
     // We may want to revisit this to make it "strain" more at the edges, but this
     // works for now.
-    Vector3 scaleMousePos(Vector3 unscaledMousePos)
+    Vector3 ScaleMousePos(Vector3 unscaledMousePos)
     {
         return new Vector3(Mathf.Clamp(unscaledMousePos.x / Screen.width, 0.0f, 1.0f), Mathf.Clamp(unscaledMousePos.y / Screen.height, 0.0f, 1.0f), 0.0f);
     }
