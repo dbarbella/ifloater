@@ -26,8 +26,11 @@ public class Floater : MonoBehaviour
     // but a constant is fine for now.
     public float blinkReactionDelay = 0.1f;
 
+    // Don't react to a blink if you're above this ceiling.
+    public float blinkReactionCeiling = 6.0f;
+
     public float destroyFloaterFloor = -8.0f;
-    public float destroyFloaterCeiling = 8.0f;
+    public float destroyFloaterCeiling = 9.0f;
     public float destroyFloaterLeftWall = -12.0f;
     public float destroyFloaterRightWall = 12.0f;
 
@@ -86,7 +89,14 @@ public class Floater : MonoBehaviour
         {
             print("Adding up blink force...");
         }
-        rb.AddForce(Vector3.up * blinkThrust * (1+(Random.Range(-blinkThrustChaos, blinkThrustChaos))));
+        //print(transform.position.y + " " + blinkReactionCeiling);
+        //print((transform.position.y < blinkReactionCeiling));
+
+        if (transform.position.y < blinkReactionCeiling)
+        {
+            print("Getting in here.");
+            rb.AddForce(Vector3.up * blinkThrust * (1 + (Random.Range(-blinkThrustChaos, blinkThrustChaos))));
+        }
     }
 
     // Don't like that this is public and the other add i

@@ -134,7 +134,6 @@ public class GameController : MonoBehaviour
             negativeForceValue = -1;
         }
         returnForce = Mathf.Pow((Mathf.Abs(inputForce) * irisJerkMultiplier), irisJerkExponent) * negativeForceValue;
-        print(inputForce + " " + returnForce);
         return returnForce;
     }
 
