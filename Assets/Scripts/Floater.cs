@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This may be best split into mulitple scripts - it's doing too much.
+
 public class Floater : MonoBehaviour
 {
     public float minFloaterLen = 0.5f;
@@ -24,6 +26,13 @@ public class Floater : MonoBehaviour
     // but a constant is fine for now.
     public float blinkReactionDelay = 0.1f;
 
+    public float destroyFloaterFloor = -8.0f;
+    public float destroyFloaterCeiling = 8.0f;
+    public float destroyFloaterLeftWall = -12.0f;
+    public float destroyFloaterRightWall = 12.0f;
+
+    public GameController gameController;
+
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +44,16 @@ public class Floater : MonoBehaviour
         transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, UnityEngine.Random.Range(-180.0f, 180.0f));
 
         rb = GetComponent<Rigidbody>();
+
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        if (gameControllerObject != null)
+        {
+            gameController = gameControllerObject.GetComponent<GameController>();
+        }
+        if (gameController == null)
+        {
+            Debug.Log("Cannot find 'GameController' script.");
+        }
     }
 
 
@@ -42,6 +61,7 @@ public class Floater : MonoBehaviour
     void Update()
     {
         // If we collide with bottom of top lid, and it's going up, we want to go up.
+        destroyIfOutOfBounds();
     }
 
     public void reactToBlink()
@@ -84,6 +104,15 @@ public class Floater : MonoBehaviour
     }
 
     // We need to destroy it when it goes out of bounds, or respawn it or something
+    void destroyIfOutOfBounds()
+    {
+        if (transform.position.x > destroyFloaterRightWall ||
+            transform.position.x < destroyFloaterLeftWall  ||
+            transform.position.y < destroyFloaterFloor     ||
+            transform.position.y > destroyFloaterCeiling)
+        {
+            gameController.DestroyFloater(transform.gameObject, "bounds");
+        }
+}
 
-    // We need to destroy it when it goes in the crosshair and award points.
 }

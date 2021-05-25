@@ -227,4 +227,10 @@ MonoBehaviour:
   debugFloater: 0
   blinkThrust: 750
   blinkThrustChaos: 0.5
+  irisJerkChaos: 0.5
   blinkReactionDelay: 0.1
+  destroyFloaterFloor: -8
+  destroyFloaterCeiling: 8
+  destroyFloaterLeftWall: -12
+  destroyFloaterRightWall: 12
+  gameController: {fileID: 0}

@@ -146,8 +146,8 @@ public class GameController : MonoBehaviour
         Destroy(floaterObject);
         // Flash the reticle.
 
-        // Increment the score.
+        // Increment the score if appropriate.
 
-        // Adjust the eye.
+        // Adjust the eye if appropriate.
     }
 }
