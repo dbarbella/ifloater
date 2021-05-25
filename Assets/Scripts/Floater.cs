@@ -94,7 +94,6 @@ public class Floater : MonoBehaviour
 
         if (transform.position.y < blinkReactionCeiling)
         {
-            print("Getting in here.");
             rb.AddForce(Vector3.up * blinkThrust * (1 + (Random.Range(-blinkThrustChaos, blinkThrustChaos))));
         }
     }

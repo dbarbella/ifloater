@@ -24,9 +24,13 @@ public class GameController : MonoBehaviour
     public bool debugFloaterSpawn;
     public bool debugBlinkMessaging;
     public bool debugIrisMessaging;
+    public bool debugIrritation;
 
     private GameObject newFloater;
     private List<GameObject> livingFloaters = new List<GameObject>();
+
+    private float irritation;
+    public float maxIrritation;
 
     IEnumerator SpawnFloaters()
     {
@@ -62,18 +66,39 @@ public class GameController : MonoBehaviour
         }
     }
 
+    // Irritation needs to go up over time
+    // For now, it just goes up a little at a time, linearly
+    IEnumerator AdjustIrritation()
+    {
+        while (true)
+        {
+            irritation = irritation + 1.0f;
+            if (debugIrritation)
+            {
+                Debug.Log("Irritation: " + irritation);
+            }
+            yield return new WaitForSeconds(1);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        irritation = 0;
+        
         StartCoroutine(SpawnFloaters());
+        StartCoroutine(AdjustIrritation());
     }
 
     // Update is called once per frame
     void Update()
     {
-        // This needs to periodically spawn floaters
-        // Check how we spawn asteroids
-        // This maybe needs to be a separate spawner script?
+
+    }
+
+    public float GetIrritation()
+    {
+        return irritation;
     }
 
     public void ReceiveBlinkNotice()
