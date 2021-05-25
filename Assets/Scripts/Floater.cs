@@ -18,6 +18,7 @@ public class Floater : MonoBehaviour
     // variation factor in how big the bump is.
     // Randomly increase or decrease by up to this percent.
     public float blinkThrustChaos = 0.5f;
+    public float irisJerkChaos = 0.5f;
 
     // We may eventually want this to depend on the floater's y value,
     // but a constant is fine for now.
@@ -77,7 +78,9 @@ public class Floater : MonoBehaviour
         }
         // It's possible that this Vector3 should be built in
         // GameController.
-        rb.AddForce(new Vector3(xForce, yForce, 0.0f));
+        float randomIrisThrustfactor;
+        randomIrisThrustfactor = (1 + (Random.Range(-irisJerkChaos, irisJerkChaos)));
+        rb.AddForce(new Vector3(xForce * randomIrisThrustfactor, yForce * randomIrisThrustfactor, 0.0f));
     }
 
     // We need to destroy it when it goes out of bounds, or respawn it or something

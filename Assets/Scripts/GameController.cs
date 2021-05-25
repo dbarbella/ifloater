@@ -144,5 +144,10 @@ public class GameController : MonoBehaviour
         livingFloaters.Remove(floaterObject);
         // Destroy it.
         Destroy(floaterObject);
+        // Flash the reticle.
+
+        // Increment the score.
+
+        // Adjust the eye.
     }
 }
