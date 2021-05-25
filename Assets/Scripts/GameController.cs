@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour
     private float irritation;
     public float maxIrritation;
 
+    public float irritationReductionOnZap;
+
     IEnumerator SpawnFloaters()
     {
         if (debugFloaterSpawn)
@@ -168,10 +170,19 @@ public class GameController : MonoBehaviour
         livingFloaters.Remove(floaterObject);
         // Destroy it.
         Destroy(floaterObject);
-        // Flash the reticle.
+        
 
-        // Increment the score if appropriate.
+        
 
         // Adjust the eye if appropriate.
+        if (causeOfDeath.Equals("zapped"))
+        {
+            print("Getting in here - Zapped!");
+            irritation = (Mathf.Max(0, irritation - irritationReductionOnZap));
+
+            // Flash the reticle.
+
+            // Increment the score if appropriate.
+        }
     }
 }

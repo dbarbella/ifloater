@@ -393,6 +393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameController: {fileID: 0}
+  debugWhiteColor: 0
 --- !u!1 &512701812
 GameObject:
   m_ObjectHideFlags: 0
@@ -1532,8 +1533,9 @@ MonoBehaviour:
   debugFloaterSpawn: 0
   debugBlinkMessaging: 0
   debugIrisMessaging: 0
-  debugIrritation: 1
+  debugIrritation: 0
   maxIrritation: 100
+  irritationReductionOnZap: 2
 --- !u!4 &1653571016
 Transform:
   m_ObjectHideFlags: 0
