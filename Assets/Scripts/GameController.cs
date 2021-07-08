@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -21,6 +23,8 @@ public class GameController : MonoBehaviour
     public bool gameOver;
     public bool restart;
 
+    public Text restartText;
+
     public bool debugFloaterSpawn;
     public bool debugBlinkMessaging;
     public bool debugIrisMessaging;
@@ -33,6 +37,10 @@ public class GameController : MonoBehaviour
     public float maxIrritation;
 
     public float irritationReductionOnZap;
+
+    // These values determine how the floaters react to iris movement.
+    public float irisJerkMultiplier;
+    public float irisJerkExponent;
 
     IEnumerator SpawnFloaters()
     {
@@ -61,7 +69,7 @@ public class GameController : MonoBehaviour
 
             if (gameOver)
             {
-                //restartText.text = "Press 'r' to restart";
+                restartText.text = "Press 'r' to restart";
                 restart = true;
                 break;
             }
@@ -70,11 +78,12 @@ public class GameController : MonoBehaviour
 
     // Irritation needs to go up over time
     // For now, it just goes up a little at a time, linearly
+    // Something also needs to care about maxIrritation.
     IEnumerator AdjustIrritation()
     {
         while (true)
         {
-            irritation = irritation + 1.0f;
+            irritation = irritation + 8.0f;
             if (debugIrritation)
             {
                 Debug.Log("Irritation: " + irritation);
@@ -87,7 +96,8 @@ public class GameController : MonoBehaviour
     void Start()
     {
         irritation = 0;
-        
+        restartText.text = "";
+
         StartCoroutine(SpawnFloaters());
         StartCoroutine(AdjustIrritation());
     }
@@ -95,7 +105,20 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GetIrritation() >= maxIrritation)
+        {
+            gameOver = true;
+            // End the game, report score
+        }
 
+        if (restart)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                // For some reason this isn't turning on the lights.
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
     }
 
     public float GetIrritation()
@@ -149,10 +172,6 @@ public class GameController : MonoBehaviour
     // Convert a force
     float ConvertIrisMovementForce(float inputForce)
     {
-        // These values determine how the floaters react to iris movement.
-        float irisJerkMultiplier = 13.0f;
-        float irisJerkExponent = 2.0f;
-        
         float returnForce;
         int negativeForceValue = 1;
 
@@ -170,9 +189,6 @@ public class GameController : MonoBehaviour
         livingFloaters.Remove(floaterObject);
         // Destroy it.
         Destroy(floaterObject);
-        
-
-        
 
         // Adjust the eye if appropriate.
         if (causeOfDeath.Equals("zapped"))
