@@ -22,8 +22,11 @@ public class GameController : MonoBehaviour
 
     public bool gameOver;
     public bool restart;
+    private bool readyScreen = true;
+    private bool mainGameLoop = false;
 
     public Text restartText;
+    public Text intructionsText;
 
     public bool debugFloaterSpawn;
     public bool debugBlinkMessaging;
@@ -45,25 +48,30 @@ public class GameController : MonoBehaviour
     IEnumerator SpawnFloaters()
     {
         if (debugFloaterSpawn)
-        { print("Starting spawning."); }
+        { print("Inside spawning method."); }
         
+        if (debugFloaterSpawn)
+        { print("Starting spawning."); }
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            for (int i = 0; i < hazardCount; i++)
+            if (mainGameLoop)
             {
-                if (debugFloaterSpawn)
-                { print("Making a floater."); }
+                for (int i = 0; i < hazardCount; i++)
+                {
+                    if (debugFloaterSpawn)
+                    { print("Making a floater."); }
 
-                // Choose spawn position randomly
-                // The size and rotation are chosen randomly by the floater itself, not here.
-                Vector3 spawnPosition = new Vector3(Random.Range(minFloaterSpawnX, maxFloaterSpawnX), floaterSpawnY, floaterSpawnZ);
-                // Create the floater
-                newFloater = Instantiate(floater, spawnPosition, Quaternion.identity);
-                // Add the floater to livingFloaters
-                livingFloaters.Add(newFloater);
-                // Wait to spawn the next one
-                yield return new WaitForSeconds(spawnWait);
+                    // Choose spawn position randomly
+                    // The size and rotation are chosen randomly by the floater itself, not here.
+                    Vector3 spawnPosition = new Vector3(Random.Range(minFloaterSpawnX, maxFloaterSpawnX), floaterSpawnY, floaterSpawnZ);
+                    // Create the floater
+                    newFloater = Instantiate(floater, spawnPosition, Quaternion.identity);
+                    // Add the floater to livingFloaters
+                    livingFloaters.Add(newFloater);
+                    // Wait to spawn the next one
+                    yield return new WaitForSeconds(spawnWait);
+                }
             }
             yield return new WaitForSeconds(waveWait);
 
@@ -74,6 +82,7 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
+        //yield return new WaitForSeconds(waveWait);
     }
 
     // Irritation needs to go up over time
@@ -83,10 +92,13 @@ public class GameController : MonoBehaviour
     {
         while (true)
         {
-            irritation = irritation + 8.0f;
-            if (debugIrritation)
+            if (mainGameLoop)
             {
-                Debug.Log("Irritation: " + irritation);
+                irritation = irritation + 8.0f;
+                if (debugIrritation)
+                {
+                    Debug.Log("Irritation: " + irritation);
+                }
             }
             yield return new WaitForSeconds(1);
         }
@@ -105,7 +117,18 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetIrritation() >= maxIrritation)
+        if (readyScreen)
+        {
+            if (Input.anyKey)
+            {
+                readyScreen = false;
+                mainGameLoop = true;
+                // Hide the instructions text
+                intructionsText.gameObject.SetActive(false);
+            }
+        }
+
+        if (mainGameLoop && GetIrritation() >= maxIrritation)
         {
             gameOver = true;
             // End the game, report score
