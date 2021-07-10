@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour
 
     public Text restartText;
     public Text intructionsText;
+    public Text scoreText;
+
+    private int score;
 
     public bool debugFloaterSpawn;
     public bool debugBlinkMessaging;
@@ -38,6 +41,9 @@ public class GameController : MonoBehaviour
 
     private float irritation;
     public float maxIrritation;
+    public float initialIrritationRate;
+    private float irritationRate;
+    public float irritationAcceleration;
 
     public float irritationReductionOnZap;
 
@@ -87,14 +93,15 @@ public class GameController : MonoBehaviour
 
     // Irritation needs to go up over time
     // For now, it just goes up a little at a time, linearly
-    // Something also needs to care about maxIrritation.
+    // Maybe floater count should also go up over time?
     IEnumerator AdjustIrritation()
     {
         while (true)
         {
             if (mainGameLoop)
             {
-                irritation = irritation + 8.0f;
+                irritation += irritationRate;
+                irritationRate += irritationAcceleration;
                 if (debugIrritation)
                 {
                     Debug.Log("Irritation: " + irritation);
@@ -108,6 +115,8 @@ public class GameController : MonoBehaviour
     void Start()
     {
         irritation = 0;
+        irritationRate = initialIrritationRate;
+        score = 0;
         restartText.text = "";
 
         StartCoroutine(SpawnFloaters());
@@ -127,6 +136,9 @@ public class GameController : MonoBehaviour
                 intructionsText.gameObject.SetActive(false);
             }
         }
+
+        // This could probably be more efficient.
+        scoreText.text = "Score: " + score;
 
         if (mainGameLoop && GetIrritation() >= maxIrritation)
         {
@@ -222,6 +234,7 @@ public class GameController : MonoBehaviour
             // Flash the reticle.
 
             // Increment the score if appropriate.
+            score += 10;
         }
     }
 }

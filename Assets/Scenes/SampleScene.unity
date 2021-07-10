@@ -1532,11 +1532,14 @@ MonoBehaviour:
   restart: 0
   restartText: {fileID: 962912689}
   intructionsText: {fileID: 1891113772}
+  scoreText: {fileID: 2078723895}
   debugFloaterSpawn: 0
   debugBlinkMessaging: 0
   debugIrisMessaging: 0
   debugIrritation: 0
   maxIrritation: 100
+  initialIrritationRate: 1
+  irritationAcceleration: 0.01
   irritationReductionOnZap: 2
   irisJerkMultiplier: 18
   irisJerkExponent: 2
